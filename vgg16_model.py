@@ -1,6 +1,6 @@
 
 import torch
-import torch.nn as nn                                    # Neural Network Modules
+import torch.nn as nn 
 
 
 class N_conv(nn.Module):
@@ -72,12 +72,3 @@ class VGG16(nn.Module):
         x = self.dropout(x)
         x = self.linear3(x)
         return x 
-
-
-# device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
-# print(device)
-# device = "cpu"
-
-# model = VGG16(3, 2).to(device)
-
-# summary(model, (3, 224, 224), device=str(device))
