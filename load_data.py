@@ -25,8 +25,8 @@ class CatDogDataLoadandSave:
     transforms : albumentations.core.composition.Compose
         transforms that must be applied on the image
     """
-        
-    def __init__(self, data_dir: Union[str, Path]) -> None:
+
+    def __init__(self, data_dir: Union[str, Path], transforms: Optional[Callable] = None) -> None:
         cat_path: str = str(data_dir) + '/cats'
         dog_path: str = str(data_dir) + '/dogs'
         cats: List[str] = os.listdir(cat_path)
@@ -36,6 +36,8 @@ class CatDogDataLoadandSave:
         dogs_list: List[Tuple[str, int]] = [(dog_path + '/' + dogs[i], 1) for i in range(len(dogs)) if dogs[i].endswith('.jpg')]
 
         self.images.extend(dogs_list)
+
+        self.transforms = self.standard_transforms() if transforms is None else transforms
 
     def __len__(self) -> int:
         return len(self.images)
@@ -48,12 +50,12 @@ class CatDogDataLoadandSave:
     #         img = augmentations["image"]
     #     return img, y
 
-    # def standard_transforms(self) -> Compose:
-    #     return Compose([
-    #         A.Resize(224, 224),  # Resizing the image to 224x224 as VGG16 model input size is 224x224
-    #         A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-    #         ToTensorV2()
-    #     ])
+    def standard_transforms(self) -> Compose:
+        return Compose([
+            A.Resize(224, 224),  # Resizing the image to 224x224 as VGG16 model input size is 224x224
+            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+            ToTensorV2()
+        ])
     
 
     def save_as_ubyte(self, 
@@ -217,15 +219,14 @@ class CatandDogDataLoader(Dataset):
 
 
     def __getitem__(self, index: int) -> tuple[Any, Any]:
-        img, target = self.data[index], int(self.targets[index])
+        img, target = self.data[index], torch.int64(self.targets[index])
 
         if self.transforms is not None:
             transformed = self.transforms(image=img)
             img = transformed["image"]
 
         return img, target
-
-
+    
 
 
 if __name__ == "__main__":
