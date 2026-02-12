@@ -4,7 +4,7 @@
 
 [-] use lr scheduler, for example, StepLR 
 
-[-] use WandB to record train trajectory 
+[x] ~~use WandB to record train trajectory~~ 
 
 [-] use a validation set during training, and show it along with a loss trajectory 
 
