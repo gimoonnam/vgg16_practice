@@ -2,7 +2,8 @@
 
 [-] check the effect of batch size 
 
-[-] use lr scheduler, for example, StepLR 
+[x] ~~use lr scheduler, for example, StepLR~~ 
+    lr scheduler reduces fluctuations in loss values in later training stage 
 
 [x] ~~use WandB to record train trajectory~~ 
 
