@@ -1,4 +1,6 @@
 
+import os
+from datetime import datetime
 import torch
 import torch.nn as nn 
 
@@ -71,4 +73,29 @@ class VGG16(nn.Module):
         x = self.relu(x)
         x = self.dropout(x)
         x = self.linear3(x)
-        return x 
+        return x
+
+
+
+def save_checkpoint(save_path: str, batch_size: int, epoch: int, model: VGG16, optimizer: torch.optim.Optimizer, loss: float):
+    checkpoint = {
+        'batch_size': batch_size,
+        'epoch': epoch,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+        'loss': loss,
+        'saved_datetime': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+    }
+
+    save_pth = os.path.join(save_path, 'checkpoint-' + checkpoint['saved_datetime'] + '.pth')
+    torch.save(checkpoint, save_pth)
+
+
+def load_checkpoint(checkpoint_path: str, model: VGG16, optimizer: torch.optim.Optimizer):
+    checkpoint = torch.load(checkpoint_path)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    epoch: int = checkpoint['epoch']
+    loss: float = checkpoint['loss']
+
+    return model, optimizer, epoch, loss
