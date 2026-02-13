@@ -1,7 +1,7 @@
 
 
 ## Reference Architecture
-![VGG16 Architecture](https://www.kaggle.com/code/vikram12301/vgg16-from-scratch-pytorch?scriptVersionId=83194086&cellId=20)
+![VGG16 Architecture](https://viso.ai/wp-content/uploads/2024/04/vgg-16.bak-1280x708.png)
 
 ## TODO List
 
