@@ -1,18 +1,17 @@
-import sys 
+
 import os 
-import struct
 from typing import Tuple, Optional, Union, List, Callable, Any
 from pathlib import Path 
 
 import torch 
-from torch.utils.data import Dataset, DataLoader
 from PIL import Image
 import numpy as np
 from numpy.typing import NDArray
 
-import albumentations as A 
-from albumentations import Compose
-from albumentations.pytorch import ToTensorV2   # Coverting image to Tensor
+from torch.utils.data import random_split
+import torchvision.transforms as transforms
+from torchvision.transforms import Compose
+from PIL import Image
 
 
 class CatDogDataLoadandSave:
@@ -43,23 +42,33 @@ class CatDogDataLoadandSave:
         return len(self.images)
     
     def __getitem__(self, index: int) -> Tuple[torch.Tensor, int]:
-        img: NDArray[np.uint8] = np.array(Image.open(self.images[index][0]))
+        img: Image.Image = Image.open(self.images[index][0]).convert("RGB")
         y: int = self.images[index][1]
         if self.transforms is not None:
-            augmentations = self.transforms(image=img)
-            img = augmentations["image"]
+            img = self.transforms(img)
         return img, y
+
 
     def standard_transforms(self) -> Compose:
         return Compose([
-            A.Resize(224, 224),  # Resizing the image to 224x224 as VGG16 model input size is 224x224
-            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-            ToTensorV2()
+            transforms.Resize((224, 224)),  # Resizing the image to 224x224 as VGG16 model input size is 224x224
+            transforms.ToTensor(),
+            transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
         ])
-    
 
     
+def split_dataset(dataset, train_ratio=0.8, random_seed=42):
+    train_size = int(train_ratio * len(dataset))
+    val_size = len(dataset) - train_size
     
+    print(f"Training set size: {train_size}")
+    print(f"Validation set size: {val_size}")
+
+    return random_split(
+        dataset, 
+        [train_size, val_size],
+        generator=torch.Generator().manual_seed(random_seed) 
+    )
 
 
 if __name__ == "__main__":
