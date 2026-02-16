@@ -15,3 +15,11 @@
 [-] use a validation set during training, and show it along with a loss trajectory 
 
 [-] Do a literature search on how VGG16 was improved 
+
+[-] introduce the residual connection 
+
+[-] integrate L1 or L2 regularization (or batch normalization) into the VGG16 
+
+
+## Vision Transformers (next step)
+![Vision Transformers (ViT)](https://discuss.pytorch.kr/t/vision-transformer-a-visual-guide-to-vision-transformers/4158)
