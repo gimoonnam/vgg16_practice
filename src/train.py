@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Optional
 from tqdm import tqdm
 from pathlib import Path
+import pytz
 
 import torch
 import torch.nn as nn
@@ -91,12 +92,16 @@ class Trainer:
                 self.save_checkpoint(save_path=self.config.save_path, epoch=epoch + 1)
 
     def save_checkpoint(self, save_path: str, epoch: int):
+        # set the timezone on colab
+        asia_tz = pytz.timezone("Asia/Seoul")
+        current_time = datetime.now(asia_tz).strftime("%Y-%m-%d %H:%M:%S")
+
         checkpoint = {
             "batch_size": self.config.batch_size,
             "epoch": epoch,
             "model_state_dict": self.model.state_dict(),
             "optimizer_state_dict": self.optimizer.state_dict(),
-            "saved_datetime": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "saved_datetime": current_time,
         }
 
         save_pth = os.path.join(
