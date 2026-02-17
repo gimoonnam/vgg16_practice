@@ -44,10 +44,10 @@ class VGG16(nn.Module):
         self.conv5 = N_conv(512, 512, N=3)
         self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
         self.linear1 = nn.Linear(512 * 7 * 7, 4096)
-        self.linear2 = nn.Linear(4096, 4096)
+        self.linear2 = nn.Linear(4096, 1000)
         self.relu = nn.ReLU(True)
         self.dropout = nn.Dropout(0.3)
-        self.linear3 = nn.Linear(4096, out_ch)
+        self.linear3 = nn.Linear(1000, out_ch)
         if init_weights:
             self._initialize_weights()
 
