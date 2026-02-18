@@ -35,21 +35,30 @@ class N_conv(nn.Module):
 
 
 class VGG16(nn.Module):
-    def __init__(self, in_ch: int = 3, out_ch: int = 2, init_weights: bool = True):
+    def __init__(self, num_classes: int = 2, init_weights: bool = True):
         super().__init__()
-        self.conv1 = N_conv(in_ch, 64)
+        # convolutional layers (feature extraction)
+        self.conv1 = N_conv(3, 64)
         self.conv2 = N_conv(64, 128)
         self.conv3 = N_conv(128, 256, N=3)
         self.conv4 = N_conv(256, 512, N=3)
         self.conv5 = N_conv(512, 512, N=3)
         self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
-        self.linear1 = nn.Linear(512 * 7 * 7, 4096)
-        self.linear2 = nn.Linear(4096, 1000)
-        self.relu = nn.ReLU(True)
-        self.dropout = nn.Dropout(0.3)
-        self.linear3 = nn.Linear(1000, out_ch)
+
         if init_weights:
             self._initialize_weights()
+
+        # Fully connected layers (classifier)
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(512 * 7 * 7, 4096),
+            nn.ReLU(inplace=True),
+            nn.Dropout(0.5),
+            nn.Linear(4096, 4096),
+            nn.ReLU(inplace=True),
+            nn.Dropout(0.5),
+            nn.Linear(4096, num_classes),
+        )
 
     def _initialize_weights(self):
         for m in self.modules():
@@ -68,12 +77,5 @@ class VGG16(nn.Module):
         x = self.conv4(x)
         x = self.conv5(x)
         x = self.avgpool(x)
-        x = torch.flatten(x, 1)
-        x = self.linear1(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-        x = self.linear2(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-        x = self.linear3(x)
+        x = self.classifier(x)
         return x

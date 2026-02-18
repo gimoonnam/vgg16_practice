@@ -23,3 +23,9 @@
 
 ## Vision Transformers (next step)
 ![Vision Transformers (ViT)](https://discuss.pytorch.kr/t/vision-transformer-a-visual-guide-to-vision-transformers/4158)
+
+
+
+- transfer learning is chosen 
+- choosing a proper learning rate is critical in training
+- 1e-4 is used, larger ones do not help 
