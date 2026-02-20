@@ -21,6 +21,8 @@
 [-] integrate L1 or L2 regularization (or batch normalization) into the VGG16 
 
 
+![Accuracy, precision, and recall in multi-class classification](https://www.evidentlyai.com/classification-metrics/multi-class-metrics#:~:text=This%20is%20the%20accuracy%20formula,average%20recall%20and%20equals%20accuracy.)
+
 ## Vision Transformers (next step)
 ![Vision Transformers (ViT)](https://discuss.pytorch.kr/t/vision-transformer-a-visual-guide-to-vision-transformers/4158)
 
