@@ -21,6 +21,11 @@
 [-] integrate L1 or L2 regularization (or batch normalization) into the VGG16 
 
 
+![Transfer Learning for Computer Vision Tutorial](https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html)
+
+
+![hyperparameter_tuning_tutorial using Ray tune](https://docs.pytorch.org/tutorials/beginner/hyperparameter_tuning_tutorial.html)
+
 ![Accuracy, precision, and recall in multi-class classification](https://www.evidentlyai.com/classification-metrics/multi-class-metrics#:~:text=This%20is%20the%20accuracy%20formula,average%20recall%20and%20equals%20accuracy.)
 
 ## Vision Transformers (next step)
