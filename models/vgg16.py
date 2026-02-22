@@ -17,14 +17,16 @@ class N_conv(nn.Module):
         model.append(
             nn.Conv2d(in_channels, out_channels, kernel_size=(3, 3), padding=(1, 1))
         )
+        model.append(nn.BatchNorm2d(out_channels))
         model.append(nn.ReLU(True))
 
-        for i in range(N - 1):
+        for _ in range(N - 1):
             model.append(
                 nn.Conv2d(
                     out_channels, out_channels, kernel_size=(3, 3), padding=(1, 1)
                 )
             )
+            model.append(nn.BatchNorm2d(out_channels))
             model.append(nn.ReLU(True))
 
         model.append(nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2)))
@@ -35,7 +37,7 @@ class N_conv(nn.Module):
 
 
 class VGG16(nn.Module):
-    def __init__(self, num_classes: int = 2, init_weights: bool = True):
+    def __init__(self, num_classes: int = 10, init_weights: bool = True):
         super().__init__()
         # convolutional layers (feature extraction)
         self.conv1 = N_conv(3, 64)
