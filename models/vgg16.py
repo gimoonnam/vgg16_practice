@@ -18,7 +18,7 @@ class N_conv(nn.Module):
             nn.Conv2d(in_channels, out_channels, kernel_size=(3, 3), padding=(1, 1))
         )
         model.append(nn.BatchNorm2d(out_channels))
-        model.append(nn.ReLU(True))
+        model.append(nn.ReLU())
 
         for _ in range(N - 1):
             model.append(
@@ -27,7 +27,7 @@ class N_conv(nn.Module):
                 )
             )
             model.append(nn.BatchNorm2d(out_channels))
-            model.append(nn.ReLU(True))
+            model.append(nn.ReLU())
 
         model.append(nn.MaxPool2d(kernel_size=(2, 2), stride=(2, 2)))
         self.conv = nn.Sequential(*model)
@@ -54,10 +54,10 @@ class VGG16(nn.Module):
         self.classifier = nn.Sequential(
             nn.Flatten(),
             nn.Linear(512 * 7 * 7, 4096),
-            nn.ReLU(inplace=True),
+            nn.ReLU(),
             nn.Dropout(0.5),
             nn.Linear(4096, 4096),
-            nn.ReLU(inplace=True),
+            nn.ReLU(),
             nn.Dropout(0.5),
             nn.Linear(4096, num_classes),
         )
